@@ -39,7 +39,10 @@ func Register(ctx *gin.Context) {
 		Telephone: telephone,
 		Password:  password,
 	}
-	common.DB.Create(&user)
+	err:=models.Register(user)
+	if err!=nil {
+		panic(err)
+	}
 	ctx.JSON(http.StatusOK, gin.H{
 		"msg": "注册成功",
 	})

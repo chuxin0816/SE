@@ -1,8 +1,6 @@
 package common
 
 import (
-	"chuxin0816/SE/models"
-
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 )
@@ -15,6 +13,5 @@ func InitDB() (err error) {
 	if err != nil {
 		panic(err)
 	}
-	DB.AutoMigrate(&models.User{})
 	return
 }
