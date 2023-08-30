@@ -79,9 +79,7 @@ func Login(ctx *gin.Context) {
 	var user models.User
 	err := common.DB.Where("telephone = ?", telephone).First(&user).Error
 	if err != nil {
-		ctx.JSON(http.StatusInternalServerError, gin.H{
-			"code": 500, "msg": "系统异常",
-		})
+		response.Response(ctx, http.StatusInternalServerError, 500, nil, "系统异常")
 		log.Println("telephone check error: ", err)
 		return
 	}
