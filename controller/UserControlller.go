@@ -77,19 +77,14 @@ func Login(ctx *gin.Context) {
 
 	//判断手机号是否存在
 	var user models.User
-	err := common.DB.Where("telephone = ?", telephone).First(&user).Error
-	if err != nil {
-		response.Response(ctx, http.StatusInternalServerError, 500, nil, "系统异常")
-		log.Println("telephone check error: ", err)
-		return
-	}
+	common.DB.Where("telephone = ?", telephone).First(&user)
 	if user.ID == 0 {
 		response.Response(ctx, http.StatusUnprocessableEntity, 422, nil, "用户不存在")
 		return
 	}
 
 	//判断密码是否正确
-	err = bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(password))
+	err := bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(password))
 	if err != nil {
 		response.Response(ctx, http.StatusBadRequest, 400, nil, "密码错误")
 		return
@@ -116,9 +111,6 @@ func Info(ctx *gin.Context) {
 
 func isTelephoneExist(telephone string) bool {
 	var user models.User
-	err := common.DB.Where("telephone = ?", telephone).First(&user).Error
-	if err != nil {
-		log.Println("telephone check error: ", err)
-	}
+	common.DB.Where("telephone = ?", telephone).First(&user)
 	return user.ID != 0
 }
