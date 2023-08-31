@@ -15,9 +15,11 @@ import (
 
 func Register(ctx *gin.Context) {
 	//获取参数
-	name := ctx.PostForm("name")
-	telephone := ctx.PostForm("telephone")
-	password := ctx.PostForm("password")
+	var requestUser = models.User{}
+	ctx.ShouldBind(&requestUser)
+	name := requestUser.Name
+	telephone := requestUser.Telephone
+	password := requestUser.Password
 
 	//数据验证
 	if len(telephone) != 11 {
@@ -62,8 +64,10 @@ func Register(ctx *gin.Context) {
 
 func Login(ctx *gin.Context) {
 	//获取参数
-	telephone := ctx.PostForm("telephone")
-	password := ctx.PostForm("password")
+	var requestUser = models.User{}
+	ctx.ShouldBind(&requestUser)
+	telephone := requestUser.Telephone
+	password := requestUser.Password
 
 	//数据验证
 	if len(telephone) != 11 {
