@@ -59,7 +59,15 @@ func Register(ctx *gin.Context) {
 		log.Println("user create error: ", err)
 		return
 	}
-	response.Success(ctx, nil, "注册成功")
+
+	//发放token
+	token, err := common.ReleaseToken(user)
+	if err != nil {
+		response.Response(ctx, http.StatusInternalServerError, 500, nil, "系统异常")
+		log.Println("token generate error: ", err)
+		return
+	}
+	response.Success(ctx, gin.H{"token": token}, "注册成功")
 }
 
 func Login(ctx *gin.Context) {
