@@ -9,6 +9,7 @@ import (
 
 func SetupRouter() *gin.Engine {
 	r := gin.Default()
+	r.Use(middleware.RecoveryMiddleware())
 	r.POST("/api/auth/register", controller.Register)
 	r.POST("/api/auth/login", controller.Login)
 	r.GET("/api/auth/info", middleware.AuthMiddleware(), controller.Info)

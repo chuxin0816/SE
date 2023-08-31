@@ -6,7 +6,6 @@ import (
 	"chuxin0816/SE/models"
 	"chuxin0816/SE/response"
 	"chuxin0816/SE/util"
-	"log"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -56,16 +55,14 @@ func Register(ctx *gin.Context) {
 	err = common.DB.Create(&user).Error
 	if err != nil {
 		response.Response(ctx, http.StatusInternalServerError, 500, nil, "注册失败")
-		log.Println("user create error: ", err)
-		return
+		panic(err)
 	}
 
 	//发放token
 	token, err := common.ReleaseToken(user)
 	if err != nil {
 		response.Response(ctx, http.StatusInternalServerError, 500, nil, "系统异常")
-		log.Println("token generate error: ", err)
-		return
+		panic(err)
 	}
 	response.Success(ctx, gin.H{"token": token}, "注册成功")
 }
@@ -106,8 +103,7 @@ func Login(ctx *gin.Context) {
 	token, err := common.ReleaseToken(user)
 	if err != nil {
 		response.Response(ctx, http.StatusInternalServerError, 500, nil, "系统异常")
-		log.Println("token generate error: ", err)
-		return
+		panic(err)
 	}
 
 	//返回结果
