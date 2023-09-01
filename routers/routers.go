@@ -22,5 +22,16 @@ func SetupRouter() *gin.Engine {
 		categoryRouter.GET("/:id", categoryController.Show)
 		categoryRouter.DELETE("/:id", categoryController.Delete)
 	}
+
+	postRouter := r.Group("/posts")
+	{
+		postController := controller.NewPostController()
+		postRouter.Use(middleware.AuthMiddleware())
+		postRouter.POST("", postController.Create)
+		postRouter.PUT("/:id", postController.Update)
+		postRouter.GET("/:id", postController.Show)
+		postRouter.DELETE("/:id", postController.Delete)
+		postRouter.GET("/page/list",postController.PageList)
+	}
 	return r
 }

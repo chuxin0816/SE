@@ -21,9 +21,8 @@ type CategoryController struct {
 }
 
 func NewCategoryController() ICategoryController {
-	repository := repository.NewCategoryRepository()
 	common.DB.AutoMigrate(&models.Category{})
-	return CategoryController{Repository: repository}
+	return CategoryController{Repository: repository.NewCategoryRepository()}
 }
 
 func (c CategoryController) Create(ctx *gin.Context) {
